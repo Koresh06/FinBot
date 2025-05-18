@@ -10,3 +10,14 @@ services:
     env_file:
       - .env
     restart: always
+
+  tests:
+    build: .
+    container_name: finance_bot_tests
+    command: pytest --maxfail=1 --disable-warnings -q
+    volumes:
+      - .:/code
+    env_file:
+      - .env
+    depends_on:
+      - bot
