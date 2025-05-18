@@ -1,3 +1,4 @@
+from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, async_sessionmaker
@@ -14,7 +15,7 @@ class PostgresSQLDatabaseHelper(IDatabase):
 
     def get_engine(self) -> AsyncEngine:
         return create_async_engine(
-            url=settings.db.construct_sqlalchemy_url(),
+            url=settings.db.connection_url,
             query_cache_size=1200,
             poolclass=AsyncAdaptedQueuePool,
             pool_recycle=1800,
@@ -30,6 +31,7 @@ class PostgresSQLDatabaseHelper(IDatabase):
             autoflush=False,
         )
 
+    @asynccontextmanager
     async def get_session(self) -> AsyncGenerator[AsyncSession, None]:
         async with self.sessionmaker() as session:
             yield session

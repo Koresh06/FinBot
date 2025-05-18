@@ -1,4 +1,5 @@
 from logging import getLogger
+from typing import cast
 
 from aiogram import Router
 from aiogram.types import Message
@@ -22,9 +23,9 @@ async def command_start_process(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    container: Container = dialog_manager.middleware_data["container"]
+    container: Container = cast(Container, dialog_manager.middleware_data["container"]) # type: ignore
     try:
-        use_case: UseCaseOneEntity = container.register_user_uc()
+        use_case: UseCaseOneEntity[UserEntity] = container.register_user_uc()
 
         await use_case.execute(
             UserEntity(

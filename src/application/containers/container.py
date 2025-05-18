@@ -1,15 +1,24 @@
 from dependency_injector import containers, providers
+from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
 from src.core.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
 from src.infrastructure.database.session.sqlite import SQLiteDatabaseHelper
-from src.infrastructure.repositories.memory.category_repo import CategoryMemoryRepositoryImpl
-from src.infrastructure.repositories.memory.transaction_repo import TransactionMemoryRepositoryImpl
+from src.infrastructure.repositories.memory.category_repo import (
+    CategoryMemoryRepositoryImpl,
+)
+from src.infrastructure.repositories.memory.transaction_repo import (
+    TransactionMemoryRepositoryImpl,
+)
 from src.infrastructure.repositories.memory.user_repo import UserMemoryRepositoryImpl
 from src.application.services.users.user_service import UserServiceImpl
-from src.infrastructure.repositories.sqlite.category_repo import CategorySQLiteRepositoryImpl
-from src.infrastructure.repositories.sqlite.transaction_repo import TransactionSQLiteRepositoryImpl
+from src.infrastructure.repositories.sqlite.category_repo import (
+    CategorySQLiteRepositoryImpl,
+)
+from src.infrastructure.repositories.sqlite.transaction_repo import (
+    TransactionSQLiteRepositoryImpl,
+)
 from src.infrastructure.repositories.sqlite.user_repo import UserSQLiteRepositoryImpl
 
 from src.application.use_cases.user_use_cases import (
@@ -18,23 +27,32 @@ from src.application.use_cases.user_use_cases import (
     GetUserByTgIdUseCase,
     SetUserMonthlyBudgetUseCase,
 )
-from src.application.use_cases.category_use_cases import CreateCategoryUserUseCase, GetCategoriesOfUserUseCase
+from src.application.use_cases.category_use_cases import (
+    CreateCategoryUserUseCase,
+    GetCategoriesOfUserUseCase,
+)
+
+
+def get_sqlite_sessionmaker(helper: SQLiteDatabaseHelper) -> async_sessionmaker[AsyncSession]:
+    return helper.get_sessionmaker()
+
+def get_postgres_sessionmaker(helper: PostgresSQLDatabaseHelper) -> async_sessionmaker[AsyncSession]:
+    return helper.get_sessionmaker()
 
 
 class Container(containers.DeclarativeContainer):
     config = providers.Configuration()
     db_type = providers.Object(settings.db.db_type)
-    
 
     sqlite_helper = providers.Singleton(SQLiteDatabaseHelper)
     postgres_helper = providers.Singleton(PostgresSQLDatabaseHelper)
 
     sqlite_sessionmaker = providers.Callable(
-        lambda helper: helper.get_sessionmaker(),
+        get_sqlite_sessionmaker,
         sqlite_helper,
     )
     postgres_sessionmaker = providers.Callable(
-        lambda helper: helper.get_sessionmaker(),
+        get_postgres_sessionmaker,
         postgres_helper,
     )
 
@@ -71,11 +89,10 @@ class Container(containers.DeclarativeContainer):
             TransactionSQLiteRepositoryImpl, session_factory=sqlite_sessionmaker
         ),
         postgres=providers.Factory(
-            # TransactionPostgresRepositoryImpl,  
+            # TransactionPostgresRepositoryImpl,
             session_factory=postgres_sessionmaker,
         ),
     )
-
 
     # --- Services ---
     user_service = providers.Singleton(
@@ -105,7 +122,7 @@ class Container(containers.DeclarativeContainer):
         SetUserMonthlyBudgetUseCase,
         service=user_service,
     )
-    
+
     # --- Category use cases ---
     get_categories_uc = providers.Factory(
         GetCategoriesOfUserUseCase,

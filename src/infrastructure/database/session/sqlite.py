@@ -1,9 +1,14 @@
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession, AsyncEngine
 from contextlib import asynccontextmanager
+from sqlalchemy.ext.asyncio import (
+    create_async_engine,
+    async_sessionmaker,
+    AsyncSession,
+    AsyncEngine,
+)
 from typing import AsyncGenerator
 
 from src.core.database.intarface import IDatabase
-from src.core.config import settings 
+from src.core.config import settings
 
 
 class SQLiteDatabaseHelper(IDatabase):
@@ -13,8 +18,8 @@ class SQLiteDatabaseHelper(IDatabase):
 
     def get_engine(self) -> AsyncEngine:
         return create_async_engine(
-            url=settings.db.connection_url, 
-            echo=settings.db.sqlite.echo if settings.db.sqlite else False
+            url=settings.db.connection_url,
+            echo=settings.db.sqlite.echo if settings.db.sqlite else False,
         )
 
     def get_sessionmaker(self) -> async_sessionmaker[AsyncSession]:

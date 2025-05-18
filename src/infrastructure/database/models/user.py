@@ -1,4 +1,6 @@
 # app/infrastructure/models/user.py
+from typing import Optional, TYPE_CHECKING
+from datetime import datetime
 from sqlmodel import (
     Column,
     DateTime,
@@ -8,8 +10,6 @@ from sqlmodel import (
     func,
     Enum as SAEnum,
 )
-from typing import Optional, TYPE_CHECKING
-from datetime import datetime
 
 from src.domain.entities.enums.currency_enum import CurrencyEnum
 
@@ -19,7 +19,8 @@ if TYPE_CHECKING:
 
 
 class UserModel(SQLModel, table=True):
-    __tablename__ = "users"
+    __tablename__: str = "users" # type: ignore
+
 
     id: Optional[int] = Field(default=None, primary_key=True)
     tg_id: int = Field(unique=True, index=True)

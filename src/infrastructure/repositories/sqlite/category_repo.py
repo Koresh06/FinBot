@@ -1,7 +1,6 @@
-from typing import Optional
+from typing import List, Optional, Sequence
 from sqlmodel import select
-from sqlalchemy import Result
-from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 
 from src.domain.repositories.category_repo import ICategoryRepository
 from src.domain.entities.category import CategoryEntity
@@ -11,15 +10,16 @@ from src.core.mappers.category_mapper import db_to_domain
 
 class CategorySQLiteRepositoryImpl(ICategoryRepository):
 
-    def __init__(self, session_factory: AsyncSession):
+    def __init__(self, session_factory: async_sessionmaker[AsyncSession]):
         self.session_factory = session_factory
 
-    async def get_user_categories(self, user_id: int) -> list[CategoryEntity]:
+
+    async def get_user_categories(self, user_id: int) -> List[CategoryEntity]:
         async with self.session_factory() as session:
-            stmt = select(CategoryModel).where(CategoryModel.user_id == user_id)
-            result: Result = await session.execute(stmt)
-            categories = result.scalars()
-            return [db_to_domain(cat) for cat in categories]
+            stmt = await session.execute(select(CategoryModel).where(CategoryModel.user_id == user_id))
+            categories_result: Sequence[CategoryModel] = stmt.scalars().all()
+
+            return [db_to_domain(cat) for cat in categories_result]
 
             
     async def create(self, category: CategoryEntity) -> CategoryEntity:
@@ -36,12 +36,12 @@ class CategorySQLiteRepositoryImpl(ICategoryRepository):
 
     async def get_by_user_and_name(self, user_id: int, name: str) -> Optional[CategoryEntity]:
         async with self.session_factory() as session:
-            stmt = select(CategoryModel).where(
+            stmt = await session.execute(select(CategoryModel).where(
                 CategoryModel.user_id == user_id,
                 CategoryModel.name == name
-            )
-            result: Result = await session.execute(stmt)
-            category = result.scalar_one_or_none()
-            if category:
-                return db_to_domain(category)
+            ))
+            category_result: Optional[CategoryModel] = stmt.scalar_one_or_none()
+
+            if category_result:
+                return db_to_domain(category_result)
             return None

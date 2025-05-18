@@ -94,7 +94,7 @@ class DatabaseConfig(BaseModel):
 
 
 class TgBot(BaseModel):
-    token: str
+    token: str = 'token'
 
 
 class Settings(BaseSettings):
@@ -107,7 +107,7 @@ class Settings(BaseSettings):
     run: RunConfig = RunConfig()
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig = DatabaseConfig()
-    bot: TgBot
+    bot: TgBot = TgBot()
 
 
 settings = Settings()

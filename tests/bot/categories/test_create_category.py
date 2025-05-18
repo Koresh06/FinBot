@@ -32,9 +32,9 @@ async def test_create_category_error_handler():
     dialog_manager = MagicMock()
     dialog_manager.start = AsyncMock()
 
-    text = "some error"
+    error = ValueError("some error")
 
-    await create_category_error_handler(message, widget, dialog_manager, text)
+    await create_category_error_handler(message, widget, dialog_manager, error)
     message.answer.assert_awaited_once_with("Указана неверное название категории!")
 
 

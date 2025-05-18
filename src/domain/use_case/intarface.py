@@ -1,23 +1,20 @@
+from typing import Any, Iterable, TypeVar, Generic, Optional
 from abc import ABC, abstractmethod
-from typing import TypeVar, Generic, Iterable
 
 
-Entity = TypeVar("Entity") 
-
+Entity = TypeVar("Entity")
 
 class GenericUseCase(ABC, Generic[Entity]):
     @abstractmethod
-    def execute(self) -> Entity:
+    async def execute(self, *args: Any, **kwargs: Any) -> Entity:
         """Execute a use case & return a generic type"""
 
-
-class UseCaseOneEntity(GenericUseCase[Entity], ABC):
+class UseCaseOneEntity(GenericUseCase[Optional[Entity]], ABC):
     @abstractmethod
-    def execute(self) -> Entity:
+    async def execute(self, *args: Any, **kwargs: Any) -> Optional[Entity]:
         """Execute a use case & return a single entity object"""
-
 
 class UseCaseMultipleEntities(GenericUseCase[Iterable[Entity]], ABC):
     @abstractmethod
-    def execute(self) -> Iterable[Entity]:
+    async def execute(self, *args: Any, **kwargs: Any) -> Iterable[Entity]:
         """Execute a use case & return multiple entity objects"""

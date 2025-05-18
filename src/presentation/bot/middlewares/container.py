@@ -1,9 +1,9 @@
-from typing import Any, Callable, Dict
+from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
 from aiogram.types import TelegramObject
 
-from src.application.containers.container import Container 
+from src.application.containers.container import Container
 
 
 class ContainerMiddleware(BaseMiddleware):
@@ -12,9 +12,16 @@ class ContainerMiddleware(BaseMiddleware):
 
     async def __call__(
         self,
-        handler: Callable,
+        handler: Callable[
+            [
+                TelegramObject,
+                Dict[str, Any,],
+            ],
+            Awaitable[Any],
+        ],
         event: TelegramObject,
-        data: Dict[str, Any]
+        data: Dict[str, Any],
     ) -> Any:
         data["container"] = self.container
         return await handler(event, data)
+

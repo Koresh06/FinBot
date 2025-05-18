@@ -1,11 +1,11 @@
 from src.domain.entities.category import CategoryEntity
 from src.domain.services.user_service_intarface import IUserService
 from src.domain.use_case.base_use_case import BaseUseCase
-from src.domain.use_case.intarface import UseCaseOneEntity
+from src.domain.use_case.intarface import UseCaseMultipleEntities, UseCaseOneEntity
 from src.domain.services.category_service import ICategoryService
 
 
-class GetCategoriesOfUserUseCase(UseCaseOneEntity[CategoryEntity], BaseUseCase):
+class GetCategoriesOfUserUseCase(UseCaseMultipleEntities[CategoryEntity], BaseUseCase):
     def __init__(
         self,
         category_service: ICategoryService,
@@ -32,10 +32,15 @@ class CreateCategoryUserUseCase(UseCaseOneEntity[CategoryEntity], BaseUseCase):
 
     async def execute(self, tg_id: int, name: str) -> None:
         user = await self.user_service.get_user_by_tg_id(tg_id)
-        
+        if user is None:
+            raise ValueError(f"Пользователь с tg_id={tg_id} не найден")
+        if user.id is None:
+            raise ValueError("ID пользователя не может быть None")
+    
         await self.category_service.create_category(
             CategoryEntity(
                 name=name,
                 user_id=user.id,
             )
         )
+

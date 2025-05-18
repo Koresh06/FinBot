@@ -10,7 +10,7 @@ if TYPE_CHECKING:
 
 
 class TransactionModel(SQLModel, table=True):
-    __tablename__ = "transactions"
+    __tablename__ = "transactions" # type: ignore
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")

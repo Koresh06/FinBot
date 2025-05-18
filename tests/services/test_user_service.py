@@ -75,7 +75,9 @@ async def test_set_monthly_budget():
 
     service = UserServiceImpl(repository=mock_repo)
 
-    result = await service.set_monthly_budget(123, 5000.0)
+    await service.set_monthly_budget(123, 5000.0)
+
+    result = await service.get_user_by_tg_id(123)
 
     assert result.monthly_budget == 5000.0
     mock_repo.update.assert_called_once()

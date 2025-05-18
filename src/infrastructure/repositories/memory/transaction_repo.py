@@ -1,5 +1,3 @@
-
-
 from src.domain.entities.transaction import TransactionEntity
 from src.domain.repositories.transaction_use_case import ITransactionRepository
 

@@ -5,11 +5,12 @@ from src.domain.entities.category import CategoryEntity, DEFAULT_CATEGORIES
 
 
 class CategoryServiceImpl(ICategoryService):
-
-    def __init__(self,category_repo: ICategoryRepository,):
+    def __init__(self, category_repo: ICategoryRepository):
         self.category_repo = category_repo
 
-    async def get_user_categories(self, user_id: int) -> list[CategoryEntity]:
+    async def get_user_categories(self, user_id: int | None) -> list[CategoryEntity]:
+        if user_id is None:
+            raise ValueError("user_id не может быть None")
         return await self.category_repo.get_user_categories(user_id)
 
     async def create_category(self, category: CategoryEntity) -> CategoryEntity:
@@ -22,7 +23,7 @@ class CategoryServiceImpl(ICategoryService):
 
         return await self.category_repo.create(category)
     
-    async def create_default_categories(self, user_id: int) -> CategoryEntity | None:
+    async def create_default_categories(self, user_id: int) -> None:
         for name in DEFAULT_CATEGORIES:
             category = CategoryEntity(name=name, user_id=user_id)
             await self.create_category(category)

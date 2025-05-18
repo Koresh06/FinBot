@@ -79,4 +79,4 @@ async def add_transaction(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    await dialog_manager.start(state=AddTransaction.start)
+    await dialog_manager.start(state=AddTransaction.start) # type: ignore

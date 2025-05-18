@@ -17,4 +17,6 @@ class TransactionServiceImpl(ITransactionService):
     async def add_transaction(
         self, transaction: TransactionEntity
     ) -> TransactionEntity:
-        await self._repo.add(transaction)
+        saved_transaction = await self._repo.add(transaction)
+        return saved_transaction
+

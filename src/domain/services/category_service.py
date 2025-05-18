@@ -15,5 +15,5 @@ class ICategoryService(ABC):
         ...
 
     @abstractmethod
-    async def create_default_categories(self, user_id: int) -> CategoryEntity:
+    async def create_default_categories(self, user_id: int) -> None:
         ...

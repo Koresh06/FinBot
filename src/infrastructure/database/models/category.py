@@ -8,7 +8,7 @@ if TYPE_CHECKING:
 
 
 class CategoryModel(SQLModel, table=True):
-    __tablename__ = "categories"
+    __tablename__ = "categories" # type: ignore
 
     id: Optional[int] = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
