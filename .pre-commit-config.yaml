@@ -5,4 +5,4 @@ repos:
         name: Run pytest
         entry: pytest --maxfail=1 --disable-warnings -q
         language: system
-        types: [python]
+        pass_filenames: false
