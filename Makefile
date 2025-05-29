@@ -1,3 +1,3 @@
 # Запуск приложения
 start:
-	$ poetry run pytho
+	$ poetry run python -m src.main
