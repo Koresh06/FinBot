@@ -8,15 +8,12 @@ class TransactionServiceImpl(ITransactionService):
 
     def __init__(
         self,
-        repository: ITransactionRepository,
-        category_repo: ICategoryRepository,
+        transaction_repo: ITransactionRepository,
     ):
-        self._repo = repository
-        self.category_repo = category_repo
+        self.transaction_repo = transaction_repo
 
     async def add_transaction(
         self, transaction: TransactionEntity
     ) -> TransactionEntity:
-        saved_transaction = await self._repo.add(transaction)
-        return saved_transaction
+        return await self.transaction_repo.add(transaction)
 

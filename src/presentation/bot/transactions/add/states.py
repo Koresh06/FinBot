@@ -8,6 +8,9 @@ class AddTransaction(StatesGroup):
 class TransactionDefault(StatesGroup):
     start = State()
     cat = State()
+    total_sum = State()
+    comment = State()
+    confirm = State()
 
 
 class TransactionFromTextAI(StatesGroup):

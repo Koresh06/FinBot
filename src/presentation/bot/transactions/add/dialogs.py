@@ -5,13 +5,19 @@ from aiogram.types import Message
 from aiogram.filters import Command
 from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.text import Format, Const
-from aiogram_dialog.widgets.kbd import Start, Button, Row, Group, Select, Back
+from aiogram_dialog.widgets.kbd import Start, Button, Row, Group, Select, Back, Next
+from aiogram_dialog.widgets.input import TextInput
 
 from src.presentation.bot.categories.states import CreateCategory
-from src.presentation.bot.transactions.add.getters import getter_categories
+from src.presentation.bot.transactions.add.getters import (
+    getter_categories,
+    getter_confirm_transaction,
+)
 from src.presentation.bot.transactions.add.handlers import (
+    confirm_transaction_handler,
     save_category,
     save_type_transaction,
+    total_sum_error_handler,
 )
 from src.presentation.bot.transactions.add.states import (
     AddTransaction,
@@ -71,6 +77,41 @@ transaction_default_dialiog = Dialog(
         state=TransactionDefault.cat,
         getter=getter_categories,
     ),
+    Window(
+        Const("Укажите сумму операции:"),
+        TextInput(
+            id="total_sum",
+            type_factory=int,
+            on_success=Next(),
+            on_error=total_sum_error_handler,
+        ),
+        Back(Const("⬅️ Назад")),
+        state=TransactionDefault.total_sum,
+    ),
+    Window(
+        Const("Добавьте коментарий"),
+        TextInput(
+            id="comment",
+            type_factory=str,
+            on_success=Next(),
+        ),
+        Next(Const("Пропустить")),
+        Back(Const("⬅️ Назад")),
+        state=TransactionDefault.comment,
+    ),
+    Window(
+        Format(
+            "Тип транзацкции - {type_tr}\n" "Категория - {cat}\n" "Сумма - {total_sum}"
+        ),
+        Button(
+            Const("Подтверить!"),
+            id="confirm",
+            on_click=confirm_transaction_handler,
+        ),
+        Back(Const("⬅️ Назад")),
+        state=TransactionDefault.confirm,
+        getter=getter_confirm_transaction,
+    ),
 )
 
 
@@ -79,4 +120,4 @@ async def add_transaction(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    await dialog_manager.start(state=AddTransaction.start) # type: ignore
+    await dialog_manager.start(state=AddTransaction.start)  # type: ignore

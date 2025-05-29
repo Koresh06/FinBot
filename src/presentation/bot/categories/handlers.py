@@ -34,6 +34,5 @@ async def save_category_handler(
     name: str = dialog_manager.find("cat").get_value() # type: ignore
     await use_case.execute(callback.from_user.id, name.capitalize())
 
-    logger.info(f"Пользователь: {callback.from_user.id} создал категорию - {name.capitalize()})")
     await callback.answer(text="✅ Категория добавлена!")
     await dialog_manager.start(state=TransactionDefault.start)

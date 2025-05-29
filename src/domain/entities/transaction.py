@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
@@ -11,6 +11,6 @@ class TransactionEntity:
     category_id: int
     amount: float
     type: TransactionTypeEnum
-    created_at: datetime
+    created_at: datetime = field(default_factory=datetime.now)
     comment: Optional[str] = None
     id: Optional[int] = None

@@ -2,6 +2,7 @@ from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
+from src.application.use_cases.transaction_use_cases import AddTransactionDefaultUseCase
 from src.core.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
 from src.infrastructure.database.session.sqlite import SQLiteDatabaseHelper
@@ -20,6 +21,7 @@ from src.infrastructure.repositories.sqlite.transaction_repo import (
     TransactionSQLiteRepositoryImpl,
 )
 from src.infrastructure.repositories.sqlite.user_repo import UserSQLiteRepositoryImpl
+from src.application.services.transactions.transaction_service import TransactionServiceImpl
 
 from src.application.use_cases.user_use_cases import (
     RegisterUserUseCase,
@@ -103,6 +105,10 @@ class Container(containers.DeclarativeContainer):
         CategoryServiceImpl,
         category_repo=category_repo,
     )
+    transac_service = providers.Singleton(
+        TransactionServiceImpl,
+        transaction_repo=transaction_repo,
+    )
 
     # --- User use cases ---
     register_user_uc = providers.Factory(
@@ -132,6 +138,13 @@ class Container(containers.DeclarativeContainer):
     create_category_uc = providers.Factory(
         CreateCategoryUserUseCase,
         category_service=category_service,
+        user_service=user_service,
+    )
+
+    # --- Transaction use cases ---
+    add_transac_uv = providers.Factory(
+        AddTransactionDefaultUseCase,
+        transac_service=transac_service,
         user_service=user_service,
     )
 
