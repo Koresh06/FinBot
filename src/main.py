@@ -2,7 +2,7 @@ import logging
 import asyncio
 
 from src.presentation.bot.bot import start_bot
-from src.core.logging import setup_logging
+from src.utils.logging import setup_logging
 
 
 logger = logging.getLogger(__name__)

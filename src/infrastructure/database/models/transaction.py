@@ -3,7 +3,7 @@ from sqlmodel import Column, SQLModel, Field, Relationship, Enum as SAEnum
 from typing import Optional, TYPE_CHECKING
 from datetime import datetime
 
-from src.domain.entities.enums.transaction_type_enum import TransactionTypeEnum
+from src.domain.value_objects.transaction_type_enum import TransactionTypeEnum
 
 if TYPE_CHECKING:
     from src.infrastructure.database.models import UserModel, CategoryModel

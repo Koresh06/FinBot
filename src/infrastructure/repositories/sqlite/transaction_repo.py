@@ -1,6 +1,6 @@
 from src.domain.repositories.transaction_use_case import ITransactionRepository
 from src.domain.entities.transaction import TransactionEntity
-from src.core.mappers.transaction_mapper import db_to_domain, domain_to_db
+from src.utils.mappers.transaction_mapper import db_to_domain, domain_to_db
 
 
 class TransactionSQLiteRepositoryImpl(ITransactionRepository):

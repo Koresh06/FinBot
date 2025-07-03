@@ -1,8 +1,8 @@
 from src.domain.entities.category import CategoryEntity
-from src.domain.services.user_service_intarface import IUserService
-from src.domain.use_case.base_use_case import BaseUseCase
-from src.domain.use_case.intarface import UseCaseMultipleEntities, UseCaseOneEntity
-from src.domain.services.category_service import ICategoryService
+from src.application.services.users.interface import IUserService
+from src.application.use_cases.base_use_case import BaseUseCase
+from src.application.use_cases.intarface import UseCaseMultipleEntities, UseCaseOneEntity
+from src.application.services.categories.interface import ICategoryService
 
 
 class GetCategoriesOfUserUseCase(UseCaseMultipleEntities[CategoryEntity], BaseUseCase):

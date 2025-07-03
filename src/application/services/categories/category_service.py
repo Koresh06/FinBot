@@ -1,5 +1,5 @@
 from src.application.services.categories.exceptions import CategoryAlreadyExistsError
-from src.domain.services.category_service import ICategoryService
+from src.application.services.categories.interface import ICategoryService
 from src.domain.repositories.category_repo import ICategoryRepository
 from src.domain.entities.category import CategoryEntity, DEFAULT_CATEGORIES
 

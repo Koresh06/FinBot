@@ -1,6 +1,6 @@
 from typing import Optional
-from src.domain.entities.enums.currency_enum import CurrencyEnum
-from src.domain.services.user_service_intarface import IUserService
+from src.domain.value_objects.currency_enum import CurrencyEnum
+from src.application.services.users.interface import IUserService
 from src.domain.entities.user import UserEntity
 from src.domain.repositories.user_repo_intarface import IUserRepository
 from src.application.services.users.exceptions import UserAlreadyExistsError, UserNotFountError

@@ -4,5 +4,6 @@ MODULES = [
     "src.presentation.bot.transactions.add.getters",
     "src.presentation.bot.categories.handlers",
     "src.presentation.bot.transactions.add.handlers",
+    "src.presentation.bot.users.profile.getters",
 ]
 

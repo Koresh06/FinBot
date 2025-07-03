@@ -1,10 +1,10 @@
 import pytest
 from unittest.mock import AsyncMock
 
-from src.application.use_cases.user_use_cases import GetUserByTgIdUseCase, RegisterUserUseCase
+from src.application.use_cases.user.use_cases import GetUserByTgIdUseCase, RegisterUserUseCase
 from src.domain.entities.user import UserEntity
-from src.domain.services.category_service import ICategoryService
-from src.domain.services.user_service_intarface import IUserService
+from src.application.services.categories.interface import ICategoryService
+from src.application.services.users.interface import IUserService
 
 
 @pytest.mark.asyncio

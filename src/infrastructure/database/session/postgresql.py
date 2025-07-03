@@ -4,8 +4,8 @@ from sqlalchemy.ext.asyncio.session import AsyncSession
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncEngine, async_sessionmaker
 from sqlalchemy import AsyncAdaptedQueuePool
 
-from src.core.database.intarface import IDatabase
-from src.core.config import settings
+from src.utils.database.intarface import IDatabase
+from src.utils.config import settings
 
 
 class PostgresSQLDatabaseHelper(IDatabase):

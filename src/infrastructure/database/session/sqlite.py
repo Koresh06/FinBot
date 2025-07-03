@@ -7,8 +7,8 @@ from sqlalchemy.ext.asyncio import (
 )
 from typing import AsyncGenerator
 
-from src.core.database.intarface import IDatabase
-from src.core.config import settings
+from src.utils.database.intarface import IDatabase
+from src.utils.config import settings
 
 
 class SQLiteDatabaseHelper(IDatabase):

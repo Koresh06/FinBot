@@ -1,7 +1,7 @@
 from src.domain.entities.transaction import TransactionEntity
 from src.domain.repositories.category_repo import ICategoryRepository
 from src.domain.repositories.transaction_use_case import ITransactionRepository
-from src.domain.services.transaction_service import ITransactionService
+from src.application.services.transactions.interface import ITransactionService
 
 
 class TransactionServiceImpl(ITransactionService):

@@ -3,7 +3,7 @@ from dataclasses import dataclass, field
 from typing import Optional
 from datetime import datetime
 
-from src.domain.entities.enums.currency_enum import CurrencyEnum
+from src.domain.value_objects.currency_enum import CurrencyEnum
 
 
 @dataclass

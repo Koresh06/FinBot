@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.kbd import Select, Button
 from aiogram_dialog.widgets.input import ManagedTextInput
 
 from src.application.containers.container import Container
-from src.domain.use_case.intarface import UseCaseMultipleEntities, UseCaseOneEntity
+from src.application.use_cases.intarface import UseCaseMultipleEntities, UseCaseOneEntity
 from src.domain.entities.transaction import TransactionEntity
 
 
@@ -19,7 +19,7 @@ async def save_type_transaction(
     dialog_manager: DialogManager,
 ) -> None:
     selected_type = button.widget_id  # 'income' или 'expense'
-    dialog_manager.dialog_data["transaction_type"] = selected_type # type: ignore
+    dialog_manager.dialog_data["transaction_type"] = selected_type
 
     await dialog_manager.next()
 
@@ -30,8 +30,7 @@ async def save_category(
     dialog_manager: DialogManager,
     item_id: str
 ) -> None:
-    dialog_manager.dialog_data["cat_id"] = int(item_id) # type: ignore
-    # await callback.answer(item_id)
+    dialog_manager.dialog_data["cat_id"] = int(item_id)
     await dialog_manager.next()
 
 
@@ -39,13 +38,14 @@ async def total_sum_error_handler(
     message: Message,
     widget: ManagedTextInput[str], 
     dialog_manager: DialogManager,
+    value: ValueError,
 ) -> None:
     await message.answer("Неверно указана сумма операции. Повторите!!!")
 
 
 async def confirm_transaction_handler(
     callback: CallbackQuery,
-    widget: ManagedTextInput[str], 
+    widget: Button, 
     dialog_manager: DialogManager,
 ):
     type: str = dialog_manager.dialog_data["transaction_type"]
@@ -60,7 +60,7 @@ async def confirm_transaction_handler(
         "comment": comment,
     }
 
-    container: Container = cast(Container, dialog_manager.middleware_data["container"])  # type: ignore
+    container: Container = cast(Container, dialog_manager.middleware_data["container"])
     use_case: UseCaseOneEntity[TransactionEntity] = container.add_transac_uv()
 
     await use_case.execute(tg_id=callback.from_user.id, data=data)

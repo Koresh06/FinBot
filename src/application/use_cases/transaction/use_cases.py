@@ -1,8 +1,8 @@
 from src.domain.entities.transaction import TransactionEntity
-from src.domain.services.transaction_service import ITransactionService
-from src.domain.services.user_service_intarface import IUserService
-from src.domain.use_case.base_use_case import BaseUseCase
-from src.domain.use_case.intarface import UseCaseOneEntity
+from src.application.services.transactions.interface import ITransactionService
+from src.application.services.users.interface import IUserService
+from src.application.use_cases.base_use_case import BaseUseCase
+from src.application.use_cases.intarface import UseCaseOneEntity
 
 
 class AddTransactionDefaultUseCase(UseCaseOneEntity[TransactionEntity], BaseUseCase):

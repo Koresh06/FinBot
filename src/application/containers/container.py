@@ -2,8 +2,8 @@ from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
-from src.application.use_cases.transaction_use_cases import AddTransactionDefaultUseCase
-from src.core.config import settings
+from src.application.use_cases.transaction.use_cases import AddTransactionDefaultUseCase
+from src.utils.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
 from src.infrastructure.database.session.sqlite import SQLiteDatabaseHelper
 from src.infrastructure.repositories.memory.category_repo import (
@@ -23,13 +23,13 @@ from src.infrastructure.repositories.sqlite.transaction_repo import (
 from src.infrastructure.repositories.sqlite.user_repo import UserSQLiteRepositoryImpl
 from src.application.services.transactions.transaction_service import TransactionServiceImpl
 
-from src.application.use_cases.user_use_cases import (
+from src.application.use_cases.user.use_cases import (
     RegisterUserUseCase,
     UpdateUserSettingsUseCase,
     GetUserByTgIdUseCase,
     SetUserMonthlyBudgetUseCase,
 )
-from src.application.use_cases.category_use_cases import (
+from src.application.use_cases.category.use_cases import (
     CreateCategoryUserUseCase,
     GetCategoriesOfUserUseCase,
 )
@@ -118,15 +118,15 @@ class Container(containers.DeclarativeContainer):
     )
     get_user_uc = providers.Factory(
         GetUserByTgIdUseCase,
-        service=user_service,
+        user_service=user_service,
     )
     update_user_stgs_uc = providers.Factory(
         UpdateUserSettingsUseCase,
-        service=user_service,
+        user_service=user_service,
     )
     set_budget_user_uc = providers.Factory(
         SetUserMonthlyBudgetUseCase,
-        service=user_service,
+        user_service=user_service,
     )
 
     # --- Category use cases ---

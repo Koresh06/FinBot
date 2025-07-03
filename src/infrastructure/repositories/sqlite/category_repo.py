@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker
 from src.domain.repositories.category_repo import ICategoryRepository
 from src.domain.entities.category import CategoryEntity
 from src.infrastructure.database.models.category import CategoryModel
-from src.core.mappers.category_mapper import db_to_domain
+from src.utils.mappers.category_mapper import db_to_domain
 
 
 class CategorySQLiteRepositoryImpl(ICategoryRepository):

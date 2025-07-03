@@ -2,11 +2,11 @@ import pytest
 from unittest.mock import AsyncMock
 
 from src.application.services.categories.exceptions import CategoryAlreadyExistsError
-from src.application.use_cases.category_use_cases import CreateCategoryUserUseCase, GetCategoriesOfUserUseCase
+from src.application.use_cases.category.use_cases import CreateCategoryUserUseCase, GetCategoriesOfUserUseCase
 from src.domain.entities.user import UserEntity
 from src.domain.entities.category import CategoryEntity
-from src.domain.services.category_service import ICategoryService
-from src.domain.services.user_service_intarface import IUserService
+from src.application.services.categories.interface import ICategoryService
+from src.application.services.users.interface import IUserService
 
 
 

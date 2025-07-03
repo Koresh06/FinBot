@@ -7,7 +7,7 @@ from aiogram.filters import CommandStart
 from aiogram_dialog import DialogManager
 
 from src.application.services.users.exceptions import UserAlreadyExistsError
-from src.domain.use_case.intarface import UseCaseOneEntity
+from src.application.use_cases.intarface import UseCaseOneEntity
 from src.domain.entities.user import UserEntity
 from src.application.containers.container import Container
 
@@ -23,7 +23,7 @@ async def command_start_process(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    container: Container = cast(Container, dialog_manager.middleware_data["container"]) # type: ignore
+    container: Container = cast(Container, dialog_manager.middleware_data["container"])
     try:
         use_case: UseCaseOneEntity[UserEntity] = container.register_user_uc()
 

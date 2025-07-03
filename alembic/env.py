@@ -9,7 +9,7 @@ from alembic import context
 
 from sqlmodel import SQLModel
 from src.infrastructure.database.models import UserModel, CategoryModel, TransactionModel #noqa
-from src.core.config import settings
+from src.utils.config import settings
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

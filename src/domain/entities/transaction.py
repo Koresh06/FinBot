@@ -2,7 +2,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import Optional
 
-from src.domain.entities.enums.transaction_type_enum import TransactionTypeEnum
+from src.domain.value_objects.transaction_type_enum import TransactionTypeEnum
 
 
 @dataclass

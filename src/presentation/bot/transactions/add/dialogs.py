@@ -104,7 +104,7 @@ transaction_default_dialiog = Dialog(
             "Тип транзацкции - {type_tr}\n" "Категория - {cat}\n" "Сумма - {total_sum}"
         ),
         Button(
-            Const("Подтверить!"),
+            Const("Подтвердить!"),
             id="confirm",
             on_click=confirm_transaction_handler,
         ),
@@ -120,4 +120,4 @@ async def add_transaction(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    await dialog_manager.start(state=AddTransaction.start)  # type: ignore
+    await dialog_manager.start(state=AddTransaction.start) 

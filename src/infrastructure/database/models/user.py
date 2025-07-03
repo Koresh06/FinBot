@@ -11,7 +11,7 @@ from sqlmodel import (
     Enum as SAEnum,
 )
 
-from src.domain.entities.enums.currency_enum import CurrencyEnum
+from src.domain.value_objects.currency_enum import CurrencyEnum
 
 
 if TYPE_CHECKING:

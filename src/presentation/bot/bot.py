@@ -5,7 +5,7 @@ from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
 from src.application.containers.modules import MODULES
-from src.core.config import settings
+from src.utils.config import settings
 from src.application.containers.container import container
 from src.presentation.bot import get_all_dialogs, get_routers
 from src.presentation.bot.middlewares.setup import setup_middlewares
@@ -22,6 +22,7 @@ async def start_bot():
     commands = [
         BotCommand(command="/start", description="Старт бота"),
         BotCommand(command="/add", description="Добавить транзакцию"),
+        BotCommand(command="/profile", description="Мой профиль"),
     ]
     await bot.set_my_commands(commands)
 
@@ -35,4 +36,4 @@ async def start_bot():
     setup_dialogs(dp)
 
     await bot.delete_webhook(drop_pending_updates=True)
-    await dp.start_polling(bot) # type: ignore
+    await dp.start_polling(bot)

@@ -3,7 +3,7 @@ from sqlalchemy import select
 from src.domain.repositories.user_repo_intarface import IUserRepository
 from src.domain.entities.user import UserEntity
 from src.infrastructure.database.models.user import UserModel
-from src.core.mappers.user_mapper import db_to_domain, domain_to_db
+from src.utils.mappers.user_mapper import db_to_domain, domain_to_db
 
 
 
