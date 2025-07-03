@@ -1,8 +1,7 @@
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Optional
 
-from src.domain.value_objects.transaction_type_enum import TransactionTypeEnum
+from src.domain.value_objects.operetion_type_enum import OperationType
 
 
 @dataclass
@@ -10,7 +9,7 @@ class TransactionEntity:
     user_id: int
     category_id: int
     amount: float
-    type: TransactionTypeEnum
+    type: OperationType
     created_at: datetime = field(default_factory=datetime.now)
-    comment: Optional[str] = None
-    id: Optional[int] = None
+    comment: str | None = None
+    id: int | None = None

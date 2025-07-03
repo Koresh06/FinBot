@@ -1,33 +1,37 @@
 from typing import Optional
 from src.domain.entities.category import CategoryEntity
-from src.domain.repositories.category_repo import ICategoryRepository
+from src.domain.value_objects.operetion_type_enum import OperationType
+from src.domain.repositories.category_repo_interface import ICategoryRepository
 
 
 class CategoryMemoryRepositoryImpl(ICategoryRepository):
     def __init__(self):
-        self.categories_by_user: dict[int, list[CategoryEntity]] = {}
+        self.categories: list[CategoryEntity] = []
         self.counter = 1
 
-    async def get_user_categories(self, user_id: int) -> list[CategoryEntity]:
-        return self.categories_by_user.get(user_id, [])
+    def snapshot(self):
+        import copy
+        return copy.deepcopy(self.categories)
+
+    def restore(self, state):
+        self.categories = state
+
+    async def get_user_type_categories(self, user_id: int, type: OperationType) -> list[CategoryEntity]:
+        return [cat for cat in self.categories if cat.user_id == user_id and cat.type == type]
 
     async def create(self, category: CategoryEntity) -> CategoryEntity:
         new_category = CategoryEntity(
             id=self.counter,
             name=category.name,
-            user_id=category.user_id
+            user_id=category.user_id,
+            type=OperationType(category.type)
         )
         self.counter += 1
-
-        if category.user_id not in self.categories_by_user:
-            self.categories_by_user[category.user_id] = []
-
-        self.categories_by_user[category.user_id].append(new_category)
+        self.categories.append(new_category)
         return new_category
 
-    async def get_by_user_and_name(self, user_id: int, name: str) -> Optional[CategoryEntity]:
-        for category in self.categories_by_user.get(user_id, []):
-            if category.name == name:
+    async def find_duplicate_category(self, user_id: int, type: OperationType, name: str) -> CategoryEntity | None:
+        for category in self.categories:
+            if category.user_id == user_id and category.type == type and category.name == name:
                 return category
         return None
-

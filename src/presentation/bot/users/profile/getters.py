@@ -11,7 +11,7 @@ async def my_profile_details(
     **kwargs: Any
 ) -> dict:
     container: Container = cast(Container, dialog_manager.middleware_data["container"])
-    use_case: UseCaseOneEntity[UserEntity] = container.get_user_uc()
+    use_case: UseCaseOneEntity[UserEntity | None] = container.get_user_uc()
 
 
     user = await use_case.execute(dialog_manager.event.from_user.id)
@@ -20,5 +20,5 @@ async def my_profile_details(
         "tg_id": user.tg_id,
         "username": user.username or "—",
         "full_name": user.full_name or "—",
-        "monthly_budget": f"{user.monthly_budget} {user.currency}" if user.monthly_budget else "—",
+        "monthly_budget": f"{user.monthly_budget} {user.currency}",
     }

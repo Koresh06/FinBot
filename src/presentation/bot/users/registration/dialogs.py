@@ -8,6 +8,7 @@ from aiogram_dialog import DialogManager
 
 from src.application.services.users.exceptions import UserAlreadyExistsError
 from src.application.use_cases.intarface import UseCaseOneEntity
+from src.application.dto.user import UserDTO
 from src.domain.entities.user import UserEntity
 from src.application.containers.container import Container
 
@@ -35,13 +36,21 @@ async def command_start_process(
             )
         )
 
-        logger.info(f"✅ Зарегистрирован новый пользователь: {message.from_user.full_name} ({message.from_user.id})")
-        await message.answer(text=f"Приветствую Вас <b>{message.from_user.full_name}!</b>")
+        logger.info(
+            f"✅ Зарегистрирован новый пользователь: {message.from_user.full_name} ({message.from_user.id})"
+        )
+        await message.answer(
+            text=f"Приветствую Вас <b>{message.from_user.full_name}!</b>"
+        )
 
     except UserAlreadyExistsError:
-        logger.info(f"⚠️ Пользователь уже зарегистрирован: {message.from_user.full_name} ({message.from_user.id})")
+        logger.info(
+            f"⚠️ Пользователь уже зарегистрирован: {message.from_user.full_name} ({message.from_user.id})"
+        )
         await message.answer(text="Вы уже зарегистрированы")
 
     except Exception:
-        logger.exception(f"❌ Ошибка при регистрации пользователя {message.from_user.full_name} ({message.from_user.id})")
+        logger.exception(
+            f"❌ Ошибка при регистрации пользователя {message.from_user.full_name} ({message.from_user.id})"
+        )
         await message.answer("Произошла ошибка. Попробуйте позже.")

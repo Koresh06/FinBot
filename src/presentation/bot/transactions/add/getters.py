@@ -1,8 +1,10 @@
 from typing import Any, cast
+
 from aiogram_dialog import DialogManager
 from src.application.containers.container import Container
 from src.application.use_cases.intarface import UseCaseMultipleEntities
 from src.domain.entities.category import CategoryEntity
+from src.domain.value_objects.operetion_type_enum import OperationType
 
 
 types_transaction: dict[str, Any] = {
@@ -18,11 +20,13 @@ async def getter_categories(
     container: Container = cast(Container, dialog_manager.middleware_data["container"])
     use_case: UseCaseMultipleEntities[CategoryEntity] = container.get_categories_uc()
 
+    type: str = dialog_manager.dialog_data["transaction_type"]
+
     categories: list[CategoryEntity] = await use_case.execute(
-        dialog_manager.event.from_user.id
+        tg_id=dialog_manager.event.from_user.id,
+        type=OperationType(type)
     )
     dialog_manager.dialog_data["categories"] = categories
-    type: str = dialog_manager.dialog_data["transaction_type"]
 
     return {
         "type_tr": types_transaction[type],

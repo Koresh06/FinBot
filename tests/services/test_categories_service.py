@@ -4,7 +4,7 @@ from unittest.mock import AsyncMock
 from src.application.services.categories.exceptions import CategoryAlreadyExistsError
 from src.application.services.categories.category_service import CategoryServiceImpl
 from src.domain.entities.category import CategoryEntity, DEFAULT_CATEGORIES
-from src.domain.repositories.category_repo import ICategoryRepository
+from src.domain.repositories.category_repo_interface import ICategoryRepository
 
 
 @pytest.mark.asyncio

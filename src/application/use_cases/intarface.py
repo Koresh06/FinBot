@@ -9,6 +9,11 @@ class GenericUseCase(ABC, Generic[Entity]):
     async def execute(self, *args: Any, **kwargs: Any) -> Entity:
         """Execute a use case & return a generic type"""
 
+class UseCaseNoReturn(ABC):
+    @abstractmethod
+    async def execute(self, *args: Any, **kwargs: Any) -> None:
+        """Execute a use case without returning anything"""
+
 class UseCaseOneEntity(GenericUseCase[Optional[Entity]], ABC):
     @abstractmethod
     async def execute(self, *args: Any, **kwargs: Any) -> Optional[Entity]:

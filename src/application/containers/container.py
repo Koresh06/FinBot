@@ -3,6 +3,7 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
 from src.application.use_cases.transaction.use_cases import AddTransactionDefaultUseCase
+from src.infrastructure.repositories.memory.uow import InMemoryUnitOfWork
 from src.utils.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
 from src.infrastructure.database.session.sqlite import SQLiteDatabaseHelper
@@ -21,13 +22,15 @@ from src.infrastructure.repositories.sqlite.transaction_repo import (
     TransactionSQLiteRepositoryImpl,
 )
 from src.infrastructure.repositories.sqlite.user_repo import UserSQLiteRepositoryImpl
-from src.application.services.transactions.transaction_service import TransactionServiceImpl
+from src.application.services.transactions.transaction_service import (
+    TransactionServiceImpl,
+)
 
 from src.application.use_cases.user.use_cases import (
     RegisterUserUseCase,
-    UpdateUserSettingsUseCase,
+    # UpdateUserSettingsUseCase,
     GetUserByTgIdUseCase,
-    SetUserMonthlyBudgetUseCase,
+    # SetUserMonthlyBudgetUseCase,
 )
 from src.application.use_cases.category.use_cases import (
     CreateCategoryUserUseCase,
@@ -35,10 +38,15 @@ from src.application.use_cases.category.use_cases import (
 )
 
 
-def get_sqlite_sessionmaker(helper: SQLiteDatabaseHelper) -> async_sessionmaker[AsyncSession]:
+def get_sqlite_sessionmaker(
+    helper: SQLiteDatabaseHelper,
+) -> async_sessionmaker[AsyncSession]:
     return helper.get_sessionmaker()
 
-def get_postgres_sessionmaker(helper: PostgresSQLDatabaseHelper) -> async_sessionmaker[AsyncSession]:
+
+def get_postgres_sessionmaker(
+    helper: PostgresSQLDatabaseHelper,
+) -> async_sessionmaker[AsyncSession]:
     return helper.get_sessionmaker()
 
 
@@ -61,7 +69,7 @@ class Container(containers.DeclarativeContainer):
     # --- Repositories ---
     user_repo = providers.Selector(
         db_type,
-        memory=providers.Factory(UserMemoryRepositoryImpl),
+        memory=providers.Singleton(UserMemoryRepositoryImpl),
         sqlite=providers.Factory(
             UserSQLiteRepositoryImpl,
             session_factory=sqlite_sessionmaker,
@@ -73,7 +81,7 @@ class Container(containers.DeclarativeContainer):
     )
     category_repo = providers.Selector(
         db_type,
-        memory=providers.Factory(CategoryMemoryRepositoryImpl),
+        memory=providers.Singleton(CategoryMemoryRepositoryImpl),
         sqlite=providers.Factory(
             CategorySQLiteRepositoryImpl,
             session_factory=sqlite_sessionmaker,
@@ -86,7 +94,7 @@ class Container(containers.DeclarativeContainer):
 
     transaction_repo = providers.Selector(
         db_type,
-        memory=providers.Factory(TransactionMemoryRepositoryImpl),
+        memory=providers.Singleton(TransactionMemoryRepositoryImpl),
         sqlite=providers.Factory(
             TransactionSQLiteRepositoryImpl, session_factory=sqlite_sessionmaker
         ),
@@ -94,6 +102,14 @@ class Container(containers.DeclarativeContainer):
             # TransactionPostgresRepositoryImpl,
             session_factory=postgres_sessionmaker,
         ),
+    )
+
+    # --- UoW ---
+    in_memory_uow = providers.Factory(
+        InMemoryUnitOfWork,
+        user_repository=user_repo,
+        category_repository=category_repo,
+        transaction_repository=transaction_repo,
     )
 
     # --- Services ---
@@ -108,6 +124,7 @@ class Container(containers.DeclarativeContainer):
     transac_service = providers.Singleton(
         TransactionServiceImpl,
         transaction_repo=transaction_repo,
+        user_repo=user_repo,
     )
 
     # --- User use cases ---
@@ -115,30 +132,34 @@ class Container(containers.DeclarativeContainer):
         RegisterUserUseCase,
         user_service=user_service,
         category_service=category_service,
+        # unit_of_work=in_memory_uow,
     )
     get_user_uc = providers.Factory(
         GetUserByTgIdUseCase,
         user_service=user_service,
+        # unit_of_work=in_memory_uow,
     )
-    update_user_stgs_uc = providers.Factory(
-        UpdateUserSettingsUseCase,
-        user_service=user_service,
-    )
-    set_budget_user_uc = providers.Factory(
-        SetUserMonthlyBudgetUseCase,
-        user_service=user_service,
-    )
+    # update_user_stgs_uc = providers.Factory(
+    #     UpdateUserSettingsUseCase,
+    #     user_service=user_service,
+    # )
+    # set_budget_user_uc = providers.Factory(
+    #     SetUserMonthlyBudgetUseCase,
+    #     user_service=user_service,
+    # )
 
     # --- Category use cases ---
     get_categories_uc = providers.Factory(
         GetCategoriesOfUserUseCase,
         category_service=category_service,
         user_service=user_service,
+        # unit_of_work=in_memory_uow,
     )
     create_category_uc = providers.Factory(
         CreateCategoryUserUseCase,
         category_service=category_service,
         user_service=user_service,
+        # unit_of_work=in_memory_uow,
     )
 
     # --- Transaction use cases ---
@@ -146,6 +167,7 @@ class Container(containers.DeclarativeContainer):
         AddTransactionDefaultUseCase,
         transac_service=transac_service,
         user_service=user_service,
+        unit_of_work=in_memory_uow,
     )
 
 

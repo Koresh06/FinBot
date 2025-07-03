@@ -5,8 +5,15 @@ from src.domain.entities.user import UserEntity
 
 class UserMemoryRepositoryImpl(IUserRepository):
     def __init__(self):
-        self.users: dict[int, UserEntity] = {} 
+        self.users: list[UserEntity] = []
         self.counter = 1
+
+    def snapshot(self):
+        import copy
+        return copy.deepcopy(self.users)
+
+    def restore(self, state):
+        self.users = state
 
     async def register(self, user: UserEntity) -> UserEntity:
         new_user = UserEntity(
@@ -15,9 +22,19 @@ class UserMemoryRepositoryImpl(IUserRepository):
             username=user.username,
             full_name=user.full_name,
         )
-        self.users[user.tg_id] = new_user
         self.counter += 1
+        self.users.append(new_user)
         return new_user
 
     async def get_by_tg_id(self, tg_id: int) -> UserEntity | None:
-        return self.users.get(tg_id)
+        for user in self.users:
+            if user.tg_id == tg_id:
+                return user
+        return None
+    
+    async def update(self, user_update: UserEntity) -> None:
+        for index, user in enumerate(self.users):
+            if user.id == user_update.id:
+                self.users[index] = user_update
+                return
+        raise ValueError(f"User with id={user_update.id} not found")

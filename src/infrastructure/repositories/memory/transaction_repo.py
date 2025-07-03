@@ -1,12 +1,18 @@
 from src.domain.entities.transaction import TransactionEntity
-from src.domain.repositories.transaction_use_case import ITransactionRepository
+from src.domain.repositories.transaction_repo_interface import ITransactionRepository
 
 
 class TransactionMemoryRepositoryImpl(ITransactionRepository):
     def __init__(self):
-        self.transactions: dict[int, TransactionEntity] = {} 
+        self.transactions: list[TransactionEntity] = []
         self.counter = 1
 
+    def snapshot(self):
+        import copy
+        return copy.deepcopy(self.transactions)
+
+    def restore(self, state):
+        self.transactions = state
 
     async def add(self, transaction: TransactionEntity) -> TransactionEntity:
         new_transaction = TransactionEntity(
@@ -18,9 +24,8 @@ class TransactionMemoryRepositoryImpl(ITransactionRepository):
             comment=transaction.comment,
         )
         self.counter += 1
-
-        if transaction.user_id not in self.transactions:
-            self.transactions[transaction.user_id] = []
-
-        self.transactions[transaction.user_id].append(new_transaction)
+        self.transactions.append(new_transaction)
         return new_transaction
+
+    async def get_by_user(self, user_id: int) -> list[TransactionEntity]:
+        return [t for t in self.transactions if t.user_id == user_id]

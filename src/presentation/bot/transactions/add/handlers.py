@@ -20,7 +20,6 @@ async def save_type_transaction(
 ) -> None:
     selected_type = button.widget_id  # 'income' или 'expense'
     dialog_manager.dialog_data["transaction_type"] = selected_type
-
     await dialog_manager.next()
 
 
@@ -64,6 +63,6 @@ async def confirm_transaction_handler(
     use_case: UseCaseOneEntity[TransactionEntity] = container.add_transac_uv()
 
     await use_case.execute(tg_id=callback.from_user.id, data=data)
-
+    
     await callback.message.answer("Транзакция успешно добавлена")
     logger.info(f"Пользователь: {callback.from_user.id} добавиль транзакицю: тип - {type}, категория - {cat}, сумма - {total_sum}")
