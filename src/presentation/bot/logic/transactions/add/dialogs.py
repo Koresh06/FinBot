@@ -8,19 +8,19 @@ from aiogram_dialog.widgets.text import Format, Const
 from aiogram_dialog.widgets.kbd import Start, Button, Row, Group, Select, Back, Next
 from aiogram_dialog.widgets.input import TextInput
 
-from src.presentation.bot.categories.states import CreateCategory
-from src.presentation.bot.transactions.add.getters import (
+from src.presentation.bot.logic.categories.states import CreateCategory
+from src.presentation.bot.logic.transactions.add.getters import (
     getter_categories,
     getter_confirm_transaction,
 )
-from src.presentation.bot.transactions.add.handlers import (
+from src.presentation.bot.logic.transactions.add.handlers import (
     confirm_transaction_handler,
     on_add_category_click,
     save_category,
     save_type_transaction,
     total_sum_error_handler,
 )
-from src.presentation.bot.transactions.add.states import (
+from src.presentation.bot.logic.transactions.add.states import (
     AddTransaction,
     TransactionDefault,
     TransactionFromTextAI,

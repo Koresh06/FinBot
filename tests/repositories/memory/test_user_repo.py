@@ -12,7 +12,7 @@ async def test_register_and_get_user():
         tg_id=1234567890,
         username="qwert",
         full_name="QWERT",
-        monthly_budget=123.123,
+        balance=123.123,
         currency=CurrencyEnum.USD,
     )
 
@@ -51,7 +51,7 @@ async def test_register_multiple_users():
         tg_id=111,
         username="user1",
         full_name="User One",
-        monthly_budget=100.0,
+        balance=100.0,
         currency=CurrencyEnum.EUR,
     )
     user2 = UserEntity(
@@ -59,7 +59,7 @@ async def test_register_multiple_users():
         tg_id=222,
         username="user2",
         full_name="User Two",
-        monthly_budget=200.0,
+        balance=200.0,
         currency=CurrencyEnum.USD,
     )
 

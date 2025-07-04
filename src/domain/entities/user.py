@@ -11,7 +11,7 @@ class UserEntity:
     tg_id: int
     username: str | None
     full_name: str | None
-    monthly_budget: float = field(default=0.0)
+    balance: float = field(default=0.0)
     currency: CurrencyEnum | None = None
     is_admin: bool = False
     is_superuser: bool = False
@@ -20,7 +20,7 @@ class UserEntity:
     id: int | None = None
 
     def decrease_balance(self, value: float):
-        self.monthly_budget -= value
+        self.balance -= value
 
     def increase_balance(self, value: float):
-        self.monthly_budget += value
+        self.balance += value

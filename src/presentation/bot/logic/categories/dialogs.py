@@ -4,13 +4,13 @@ from aiogram_dialog.widgets.text import Format, Const
 from aiogram_dialog.widgets.kbd import Start, Button, Next
 from aiogram_dialog.widgets.input import TextInput
 
-from src.presentation.bot.categories.gatters import cate_name_getter
-from src.presentation.bot.categories.handlers import (
+from src.presentation.bot.logic.categories.gatters import cate_name_getter
+from src.presentation.bot.logic.categories.handlers import (
     create_category_error_handler,
     save_category_handler,
 )
-from src.presentation.bot.categories.states import CreateCategory
-from src.presentation.bot.transactions.add.states import TransactionDefault
+from src.presentation.bot.logic.categories.states import CreateCategory
+from src.presentation.bot.logic.transactions.add.states import TransactionDefault
 
 
 router = Router()

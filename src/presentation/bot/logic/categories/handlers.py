@@ -9,7 +9,7 @@ from src.application.containers.container import Container
 from src.domain.entities.category import CategoryEntity
 from src.domain.value_objects.operetion_type_enum import OperationType
 from src.application.use_cases.intarface import UseCaseOneEntity
-from src.presentation.bot.transactions.add.states import TransactionDefault
+from src.presentation.bot.logic.transactions.add.states import TransactionDefault
 
 
 logger = getLogger(__name__)

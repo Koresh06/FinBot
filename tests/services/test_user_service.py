@@ -1,11 +1,13 @@
 import pytest
 from unittest.mock import AsyncMock
 
-from src.application.services.users.exceptions import UserAlreadyExistsError, UserNotFountError
+from src.application.services.users.exceptions import (
+    UserAlreadyExistsError,
+    UserNotFountError,
+)
 from src.application.services.users.user_service import UserServiceImpl
 from src.domain.entities.user import UserEntity
 from src.domain.repositories.user_repo_intarface import IUserRepository
-
 
 
 @pytest.mark.asyncio
@@ -30,9 +32,11 @@ async def test_register_user_success():
 @pytest.mark.asyncio
 async def test_register_user_already_exists():
     # Мокаем существующего пользователя
-    
+
     mock_repo = AsyncMock(spec=IUserRepository)
-    mock_repo.get_by_tg_id.return_value = UserEntity(id=1, tg_id=123, username="john", full_name="John Doe")
+    mock_repo.get_by_tg_id.return_value = UserEntity(
+        id=1, tg_id=123, username="john", full_name="John Doe"
+    )
 
     service = UserServiceImpl(repository=mock_repo)
 
@@ -45,7 +49,9 @@ async def test_register_user_already_exists():
 @pytest.mark.asyncio
 async def test_get_user_by_tg_id_success():
     mock_repo = AsyncMock(spec=IUserRepository)
-    mock_repo.get_by_tg_id.return_value = UserEntity(id=1, tg_id=123, username="john", full_name="John Doe")
+    mock_repo.get_by_tg_id.return_value = UserEntity(
+        id=1, tg_id=123, username="john", full_name="John Doe"
+    )
 
     service = UserServiceImpl(repository=mock_repo)
 
@@ -67,7 +73,7 @@ async def test_get_user_by_tg_id_not_found():
 
 
 @pytest.mark.asyncio
-async def test_set_monthly_budget():
+async def test_set_balance():
     mock_repo = AsyncMock(spec=IUserRepository)
     user = UserEntity(id=1, tg_id=123, username="john", full_name="John Doe")
     mock_repo.get_by_tg_id.return_value = user
@@ -75,9 +81,9 @@ async def test_set_monthly_budget():
 
     service = UserServiceImpl(repository=mock_repo)
 
-    await service.set_monthly_budget(123, 5000.0)
+    await service.set_balance(123, 5000.0)
 
     result = await service.get_user_by_tg_id(123)
 
-    assert result.monthly_budget == 5000.0
+    assert result.balance == 5000.0
     mock_repo.update.assert_called_once()

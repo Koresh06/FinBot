@@ -7,8 +7,8 @@ from aiogram_dialog import Dialog, DialogManager, Window
 from aiogram_dialog.widgets.text import Const, Format
 from aiogram_dialog.widgets.kbd import Button, Back, Next
 
-from src.presentation.bot.users.profile.getters import my_profile_details
-from src.presentation.bot.users.profile.states import MyProfile
+from src.presentation.bot.logic.users.profile.getters import my_profile_details
+from src.presentation.bot.logic.users.profile.states import MyProfile
 
 
 logger = getLogger(__name__)
@@ -24,7 +24,7 @@ my_profile_dialog = Dialog(
             "👤 <b>Полное имя:</b> {full_name}\n"
             "🔗 <b>Username:</b> @{username}\n"
             "🆔 <b>TG ID:</b> {tg_id}\n"
-            "💰 <b>Месячный бюджет:</b> {monthly_budget}\n"
+            "💰 <b>Баланс:</b> {balance}\n"
         ),
         state=MyProfile.start,
         getter=my_profile_details,

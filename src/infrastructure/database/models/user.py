@@ -19,14 +19,13 @@ if TYPE_CHECKING:
 
 
 class UserModel(SQLModel, table=True):
-    __tablename__: str = "users" # type: ignore
-
+    __tablename__: str = "users"  # type: ignore
 
     id: Optional[int] = Field(default=None, primary_key=True)
     tg_id: int = Field(unique=True, index=True)
     username: Optional[str] = Field(default=None, index=True)
     full_name: Optional[str] = Field(default=None)
-    monthly_budget: Optional[str] = Field(default=None)
+    balance: Optional[str] = Field(default=None)
     currency: Optional[CurrencyEnum] = Field(
         sa_column=Column(
             SAEnum(CurrencyEnum, name="currency_enum"),

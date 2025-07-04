@@ -8,7 +8,7 @@ from aiogram_dialog.widgets.input import ManagedTextInput
 from src.application.containers.container import Container
 from src.application.use_cases.intarface import UseCaseMultipleEntities, UseCaseOneEntity
 from src.domain.entities.transaction import TransactionEntity
-from src.presentation.bot.categories.states import CreateCategory
+from src.presentation.bot.logic.categories.states import CreateCategory
 
 
 logger = getLogger(__name__)

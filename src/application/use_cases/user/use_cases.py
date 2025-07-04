@@ -22,6 +22,7 @@ class RegisterUserUseCase(UseCaseOneEntity[UserEntity]):
 
         return user
 
+
 @dataclass
 class GetUserByTgIdUseCase(UseCaseOneEntity[UserEntity | None]):
 
@@ -48,8 +49,7 @@ class GetUserByTgIdUseCase(UseCaseOneEntity[UserEntity | None]):
 #     user_service: IUserService)
 
 #     async def execute(self, tg_id: int, budget: float) -> None:
-#         await self.user_service.set_monthly_budget(
+#         await self.user_service.set_balance(
 #             tg_id=tg_id,
 #             budget=budget,
 #         )
-
