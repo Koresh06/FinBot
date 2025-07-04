@@ -8,6 +8,7 @@ from aiogram_dialog.widgets.input import ManagedTextInput
 from src.application.containers.container import Container
 from src.application.use_cases.intarface import UseCaseMultipleEntities, UseCaseOneEntity
 from src.domain.entities.transaction import TransactionEntity
+from src.presentation.bot.categories.states import CreateCategory
 
 
 logger = getLogger(__name__)
@@ -21,6 +22,17 @@ async def save_type_transaction(
     selected_type = button.widget_id  # 'income' или 'expense'
     dialog_manager.dialog_data["transaction_type"] = selected_type
     await dialog_manager.next()
+
+
+
+async def on_add_category_click(
+    callback: CallbackQuery,
+    button: Button,
+    dialog_manager: DialogManager,
+):
+    type: str = dialog_manager.dialog_data["transaction_type"]
+
+    await dialog_manager.start(state=CreateCategory.name, data={"type": type})
 
 
 async def save_category(

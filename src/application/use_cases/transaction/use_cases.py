@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from src.application.uow.interfase import AbstractUnitOfWork
 from src.domain.entities.transaction import TransactionEntity
 from src.application.services.transactions.interface import ITransactionService
@@ -5,16 +7,11 @@ from src.application.services.users.interface import IUserService
 from src.application.use_cases.intarface import UseCaseOneEntity
 
 
+@dataclass
 class AddTransactionDefaultUseCase(UseCaseOneEntity[TransactionEntity]):
-    def __init__(
-        self,
-        transac_service: ITransactionService,
-        user_service: IUserService,
-        unit_of_work: AbstractUnitOfWork,
-    ):
-        self.transac_service = transac_service
-        self.user_service = user_service
-        self.uow = unit_of_work
+    transac_service: ITransactionService
+    user_service: IUserService
+    uow: AbstractUnitOfWork
 
     async def execute(self, tg_id: int, data: dict) -> None:
         async with self.uow:

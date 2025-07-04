@@ -1,8 +1,5 @@
-from src.domain.exceptions.api_exception import ApiException
-
-
-class UserAlreadyExistsError(ApiException):
+class UserAlreadyExistsError(Exception):
     pass
 
-class UserNotFountError(ApiException):
+class UserNotFountError(Exception):
     pass

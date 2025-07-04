@@ -1,12 +1,13 @@
+from dataclasses import dataclass, field
+
 from src.domain.repositories.user_repo_intarface import IUserRepository
 from src.domain.entities.user import UserEntity
 
 
-
+@dataclass
 class UserMemoryRepositoryImpl(IUserRepository):
-    def __init__(self):
-        self.users: list[UserEntity] = []
-        self.counter = 1
+    users: list[UserEntity] = field(default_factory=list)
+    counter: int = 1
 
     def snapshot(self):
         import copy

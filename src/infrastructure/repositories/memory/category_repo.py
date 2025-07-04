@@ -1,13 +1,14 @@
-from typing import Optional
+from dataclasses import dataclass, field
+
 from src.domain.entities.category import CategoryEntity
 from src.domain.value_objects.operetion_type_enum import OperationType
 from src.domain.repositories.category_repo_interface import ICategoryRepository
 
 
+@dataclass
 class CategoryMemoryRepositoryImpl(ICategoryRepository):
-    def __init__(self):
-        self.categories: list[CategoryEntity] = []
-        self.counter = 1
+    categories: list[CategoryEntity] = field(default_factory=list)
+    counter: int = 1
 
     def snapshot(self):
         import copy

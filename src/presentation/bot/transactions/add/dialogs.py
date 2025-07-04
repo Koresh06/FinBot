@@ -15,6 +15,7 @@ from src.presentation.bot.transactions.add.getters import (
 )
 from src.presentation.bot.transactions.add.handlers import (
     confirm_transaction_handler,
+    on_add_category_click,
     save_category,
     save_type_transaction,
     total_sum_error_handler,
@@ -68,10 +69,11 @@ transaction_default_dialiog = Dialog(
             ),
             width=3,
         ),
-        Start(
+        Button(
             Const("➕ Добавить категорию"),
             id="create_cat",
-            state=CreateCategory.name,
+            on_click=on_add_category_click,
+
         ),
         Back(Const("⬅️ Назад")),
         state=TransactionDefault.cat,

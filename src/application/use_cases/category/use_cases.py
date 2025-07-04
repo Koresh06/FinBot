@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from src.domain.entities.category import CategoryEntity
 from src.domain.value_objects.operetion_type_enum import OperationType
 from src.application.services.users.interface import IUserService
@@ -5,14 +7,11 @@ from src.application.use_cases.intarface import UseCaseMultipleEntities, UseCase
 from src.application.services.categories.interface import ICategoryService
 
 
+@dataclass
 class GetCategoriesOfUserUseCase(UseCaseMultipleEntities[CategoryEntity]):
-    def __init__(
-        self,
-        category_service: ICategoryService,
-        user_service: IUserService,
-    ):
-        self.category_service = category_service
-        self.user_service = user_service
+        
+    category_service: ICategoryService
+    user_service: IUserService
 
     async def execute(self, tg_id: int, type: OperationType) -> list[CategoryEntity]:
         user = await self.user_service.get_user_by_tg_id(tg_id)
@@ -20,15 +19,11 @@ class GetCategoriesOfUserUseCase(UseCaseMultipleEntities[CategoryEntity]):
             raise ValueError(f"Пользователь с tg_id={tg_id} не найден")
         return await self.category_service.get_user_type_categories(user.id, type)
 
-
+@dataclass
 class CreateCategoryUserUseCase(UseCaseOneEntity[CategoryEntity]):
-    def __init__(
-        self,
-        category_service: ICategoryService,
-        user_service: IUserService,
-    ):
-        self.category_service = category_service
-        self.user_service = user_service
+
+    category_service: ICategoryService
+    user_service: IUserService
 
     async def execute(self, tg_id: int, type: OperationType, name: str) -> None:
         user = await self.user_service.get_user_by_tg_id(tg_id)

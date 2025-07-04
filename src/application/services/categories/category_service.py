@@ -1,3 +1,5 @@
+from dataclasses import dataclass
+
 from src.domain.repositories.category_repo_interface import ICategoryRepository
 from src.domain.entities.category import CategoryEntity, DEFAULT_CATEGORIES
 from src.domain.value_objects.operetion_type_enum import OperationType
@@ -5,9 +7,10 @@ from src.application.services.categories.exceptions import CategoryAlreadyExists
 from src.application.services.categories.interface import ICategoryService
 
 
+@dataclass
 class CategoryServiceImpl(ICategoryService):
-    def __init__(self, category_repo: ICategoryRepository):
-        self.category_repo = category_repo
+
+    category_repo: ICategoryRepository
 
     async def get_user_type_categories(self, user_id: int | None, type: OperationType) -> list[CategoryEntity]:
         if user_id is None:

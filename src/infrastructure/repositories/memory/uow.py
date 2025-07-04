@@ -1,23 +1,19 @@
-import copy
+from dataclasses import dataclass, field
+
 from src.application.uow.interfase import AbstractUnitOfWork
 from src.domain.repositories.category_repo_interface import ICategoryRepository
 from src.domain.repositories.transaction_repo_interface import ITransactionRepository
 from src.domain.repositories.user_repo_intarface import IUserRepository
 
 
+@dataclass(kw_only=True)
 class InMemoryUnitOfWork(AbstractUnitOfWork):
-    def __init__(
-        self,
-        user_repository: IUserRepository,
-        category_repository: ICategoryRepository,
-        transaction_repository: ITransactionRepository,
-    ):
-        self._user_repository = user_repository
-        self._category_repository = category_repository
-        self._transaction_repository = transaction_repository
-        self._committed = False
+    _user_repository: IUserRepository = field(repr=False)
+    _category_repository: ICategoryRepository = field(repr=False)
+    _transaction_repository: ITransactionRepository = field(repr=False)
 
-        self._snapshot = {}
+    _snapshot: dict = field(default_factory=dict, init=False)
+    _committed: bool = field(default=False, init=False)
 
     @property
     def user_repository(self) -> IUserRepository:

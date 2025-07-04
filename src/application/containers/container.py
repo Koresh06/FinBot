@@ -107,15 +107,15 @@ class Container(containers.DeclarativeContainer):
     # --- UoW ---
     in_memory_uow = providers.Factory(
         InMemoryUnitOfWork,
-        user_repository=user_repo,
-        category_repository=category_repo,
-        transaction_repository=transaction_repo,
+        _user_repository=user_repo,
+        _category_repository=category_repo,
+        _transaction_repository=transaction_repo,
     )
 
     # --- Services ---
     user_service = providers.Singleton(
         UserServiceImpl,
-        repository=user_repo,
+        user_repo=user_repo,
     )
     category_service = providers.Singleton(
         CategoryServiceImpl,
@@ -132,12 +132,12 @@ class Container(containers.DeclarativeContainer):
         RegisterUserUseCase,
         user_service=user_service,
         category_service=category_service,
-        # unit_of_work=in_memory_uow,
+        # uow=in_memory_uow,
     )
     get_user_uc = providers.Factory(
         GetUserByTgIdUseCase,
         user_service=user_service,
-        # unit_of_work=in_memory_uow,
+        # uow=in_memory_uow,
     )
     # update_user_stgs_uc = providers.Factory(
     #     UpdateUserSettingsUseCase,
@@ -153,13 +153,13 @@ class Container(containers.DeclarativeContainer):
         GetCategoriesOfUserUseCase,
         category_service=category_service,
         user_service=user_service,
-        # unit_of_work=in_memory_uow,
+        # uow=in_memory_uow,
     )
     create_category_uc = providers.Factory(
         CreateCategoryUserUseCase,
         category_service=category_service,
         user_service=user_service,
-        # unit_of_work=in_memory_uow,
+        # uow=in_memory_uow,
     )
 
     # --- Transaction use cases ---
@@ -167,7 +167,7 @@ class Container(containers.DeclarativeContainer):
         AddTransactionDefaultUseCase,
         transac_service=transac_service,
         user_service=user_service,
-        unit_of_work=in_memory_uow,
+        uow=in_memory_uow,
     )
 
 

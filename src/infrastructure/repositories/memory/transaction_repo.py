@@ -1,11 +1,13 @@
+from dataclasses import dataclass, field
+
 from src.domain.entities.transaction import TransactionEntity
 from src.domain.repositories.transaction_repo_interface import ITransactionRepository
 
 
+@dataclass
 class TransactionMemoryRepositoryImpl(ITransactionRepository):
-    def __init__(self):
-        self.transactions: list[TransactionEntity] = []
-        self.counter = 1
+    transactions: list[TransactionEntity] = field(default_factory=list)
+    counter: int = 1
 
     def snapshot(self):
         import copy
