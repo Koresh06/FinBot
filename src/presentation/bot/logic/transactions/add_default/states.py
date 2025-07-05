@@ -11,7 +11,3 @@ class TransactionDefault(StatesGroup):
     total_sum = State()
     comment = State()
     confirm = State()
-
-
-class TransactionFromTextAI(StatesGroup):
-    start = State()

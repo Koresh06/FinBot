@@ -16,5 +16,5 @@ async def my_profile_details(dialog_manager: DialogManager, **kwargs: Any) -> di
         "tg_id": user.tg_id,
         "username": user.username or "—",
         "full_name": user.full_name or "—",
-        "balance": f"{user.balance} {user.currency}",
+        "balance": f"{user.balance:.2f} {user.currency.value}",
     }

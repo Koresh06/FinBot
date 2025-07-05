@@ -2,7 +2,7 @@ from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
-from src.application.use_cases.transaction.use_cases import AddTransactionDefaultUseCase
+from src.application.use_cases.transaction.use_cases import AddTransactionDefaultIncomeUseCase, AddTransactionDefaultExpenseUseCase
 from src.infrastructure.repositories.memory.uow import InMemoryUnitOfWork
 from src.utils.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
@@ -34,6 +34,7 @@ from src.application.use_cases.user.use_cases import (
 )
 from src.application.use_cases.category.use_cases import (
     CreateCategoryUserUseCase,
+    GetAllGetegoriesUserUseCase,
     GetCategoriesOfUserUseCase,
 )
 
@@ -161,10 +162,20 @@ class Container(containers.DeclarativeContainer):
         user_service=user_service,
         # uow=in_memory_uow,
     )
+    get_all_categories_uc = providers.Factory(
+        GetAllGetegoriesUserUseCase,
+        category_service=category_service,
+    )
 
     # --- Transaction use cases ---
-    add_transac_uv = providers.Factory(
-        AddTransactionDefaultUseCase,
+    add_transac_income_uc = providers.Factory(
+        AddTransactionDefaultIncomeUseCase,
+        transac_service=transac_service,
+        user_service=user_service,
+        uow=in_memory_uow,
+    )
+    add_transac_expense_uc = providers.Factory(
+        AddTransactionDefaultExpenseUseCase,
         transac_service=transac_service,
         user_service=user_service,
         uow=in_memory_uow,

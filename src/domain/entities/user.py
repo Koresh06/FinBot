@@ -12,7 +12,7 @@ class UserEntity:
     username: str | None
     full_name: str | None
     balance: float = field(default=0.0)
-    currency: CurrencyEnum | None = None
+    currency: CurrencyEnum = field(default=CurrencyEnum.RUB)
     is_admin: bool = False
     is_superuser: bool = False
     password_hash: str | None = None

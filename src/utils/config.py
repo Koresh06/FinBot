@@ -94,7 +94,13 @@ class DatabaseConfig(BaseModel):
 
 
 class TgBot(BaseModel):
-    token: str = 'token'
+    token: str = "token"
+
+
+class GeminiApiKey(BaseModel):
+    gemeni_api_key: str = "gemeni_api_key"
+    model: str = "model"
+    proxy: str = "proxy"
 
 
 class Settings(BaseSettings):
@@ -108,6 +114,7 @@ class Settings(BaseSettings):
     api: ApiPrefix = ApiPrefix()
     db: DatabaseConfig = DatabaseConfig()
     bot: TgBot = TgBot()
+    ai: GeminiApiKey = GeminiApiKey()
 
 
 settings = Settings()

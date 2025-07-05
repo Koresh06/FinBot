@@ -9,22 +9,22 @@ from aiogram_dialog.widgets.kbd import Start, Button, Row, Group, Select, Back, 
 from aiogram_dialog.widgets.input import TextInput
 
 from src.presentation.bot.logic.categories.states import CreateCategory
-from src.presentation.bot.logic.transactions.add.getters import (
+from src.presentation.bot.logic.transactions.add_default.getters import (
     getter_categories,
     getter_confirm_transaction,
 )
-from src.presentation.bot.logic.transactions.add.handlers import (
-    confirm_transaction_handler,
+from src.presentation.bot.logic.transactions.add_default.handlers import (
+    confirm_transaction_default_handler,
     on_add_category_click,
     save_category,
     save_type_transaction,
     total_sum_error_handler,
 )
-from src.presentation.bot.logic.transactions.add.states import (
+from src.presentation.bot.logic.transactions.add_default.states import (
     AddTransaction,
     TransactionDefault,
-    TransactionFromTextAI,
 )
+from src.presentation.bot.logic.transactions.add_ai.states import TransactionFromTextAI
 
 
 router = Router()
@@ -52,8 +52,16 @@ transaction_default_dialiog = Dialog(
     Window(
         Const("💰 <b>Укажите тип транзакции:</b>"),
         Row(
-            Button(Const("📈 Доход"), id="income", on_click=save_type_transaction),
-            Button(Const("📉 Расход"), id="expense", on_click=save_type_transaction),
+            Button(
+                Const("📈 Доход"),
+                id="income",
+                on_click=save_type_transaction,
+            ),
+            Button(
+                Const("📉 Расход"),
+                id="expense",
+                on_click=save_type_transaction,
+            ),
         ),
         state=TransactionDefault.start,
     ),
@@ -73,7 +81,6 @@ transaction_default_dialiog = Dialog(
             Const("➕ Добавить категорию"),
             id="create_cat",
             on_click=on_add_category_click,
-
         ),
         Back(Const("⬅️ Назад")),
         state=TransactionDefault.cat,
@@ -103,12 +110,16 @@ transaction_default_dialiog = Dialog(
     ),
     Window(
         Format(
-            "Тип транзацкции - {type_tr}\n" "Категория - {cat}\n" "Сумма - {total_sum}"
+            "🧾 *Проверьте правильность данных:*\n\n"
+            "💰 *Тип:* {type_tr}\n"
+            "🏷 *Категория:* {cat}\n"
+            "💸 *Сумма:* {total_sum} \n"
+            "📝 *Комментарий:* {comment}"
         ),
         Button(
-            Const("Подтвердить!"),
+            Const("✅"),
             id="confirm",
-            on_click=confirm_transaction_handler,
+            on_click=confirm_transaction_default_handler,
         ),
         Back(Const("⬅️ Назад")),
         state=TransactionDefault.confirm,
@@ -122,4 +133,4 @@ async def add_transaction(
     message: Message,
     dialog_manager: DialogManager,
 ):
-    await dialog_manager.start(state=AddTransaction.start) 
+    await dialog_manager.start(state=AddTransaction.start)

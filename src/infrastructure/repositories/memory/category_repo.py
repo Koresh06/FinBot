@@ -30,6 +30,10 @@ class CategoryMemoryRepositoryImpl(ICategoryRepository):
         self.counter += 1
         self.categories.append(new_category)
         return new_category
+    
+    async def get_all(self) -> list[CategoryEntity]:
+        return self.categories
+
 
     async def find_duplicate_category(self, user_id: int, type: OperationType, name: str) -> CategoryEntity | None:
         for category in self.categories:

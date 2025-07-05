@@ -1,9 +1,10 @@
 # Модуль с путями к нужным модулям
 MODULES = [
-    "src.presentation.bot.users.registration.dialogs",
-    "src.presentation.bot.transactions.add.getters",
-    "src.presentation.bot.categories.handlers",
-    "src.presentation.bot.transactions.add.handlers",
-    "src.presentation.bot.users.profile.getters",
+    "src.presentation.bot.logic.users.registration.dialogs",
+    "src.presentation.bot.logic.transactions.add_default.getters",
+    "src.presentation.bot.logic.categories.handlers",
+    "src.presentation.bot.logic.transactions.add_default.handlers",
+    "src.presentation.bot.logic.users.profile.getters",
+    "src.presentation.bot.logic.transactions.add_ai.handlers",
 ]
 

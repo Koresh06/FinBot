@@ -23,5 +23,9 @@ class ICategoryRepository(ABC):
         pass
 
     @abstractmethod
+    async def get_all(self) -> list[CategoryEntity]:
+        pass
+
+    @abstractmethod
     async def find_duplicate_category(self, user_id: int, type: OperationType, name: str) -> CategoryEntity | None:
         pass

@@ -10,7 +10,7 @@ from src.presentation.bot.logic.categories.handlers import (
     save_category_handler,
 )
 from src.presentation.bot.logic.categories.states import CreateCategory
-from src.presentation.bot.logic.transactions.add.states import TransactionDefault
+from src.presentation.bot.logic.transactions.add_default.states import TransactionDefault
 
 
 router = Router()

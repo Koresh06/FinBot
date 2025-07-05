@@ -18,3 +18,7 @@ class ICategoryService(ABC):
     @abstractmethod
     async def create_default_categories(self, user_id: int) -> None:
         ...
+
+    @abstractmethod
+    async def get_all_categories(self) -> list[CategoryEntity]:
+        pass

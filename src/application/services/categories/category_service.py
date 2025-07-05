@@ -37,3 +37,6 @@ class CategoryServiceImpl(ICategoryService):
                     type=OperationType(cat_type),
                 )
                 await self.create_category(category)
+
+    async def get_all_categories(self) -> list[CategoryEntity]:
+        return await self.category_repo.get_all()

@@ -40,3 +40,12 @@ class CreateCategoryUserUseCase(UseCaseOneEntity[CategoryEntity]):
             )
         )
 
+
+@dataclass
+class GetAllGetegoriesUserUseCase(UseCaseMultipleEntities[CategoryEntity]):
+
+    category_service: ICategoryService
+
+    async def execute(self) -> list[CategoryEntity]:
+        return await self.category_service.get_all_categories()
+    

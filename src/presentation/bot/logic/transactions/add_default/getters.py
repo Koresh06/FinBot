@@ -5,12 +5,8 @@ from src.application.containers.container import Container
 from src.application.use_cases.intarface import UseCaseMultipleEntities
 from src.domain.entities.category import CategoryEntity
 from src.domain.value_objects.operetion_type_enum import OperationType
+from src.presentation.bot.lexicon.dafault import TYPES_TRANSACTION
 
-
-types_transaction: dict[str, Any] = {
-    "income": "доход",
-    "expense": "расход",
-}
 
 
 async def getter_categories(
@@ -29,7 +25,7 @@ async def getter_categories(
     dialog_manager.dialog_data["categories"] = categories
 
     return {
-        "type_tr": types_transaction[type],
+        "type_tr": TYPES_TRANSACTION[type],
         "categories": categories,
     }
 
@@ -41,9 +37,11 @@ async def getter_confirm_transaction(
     type: str = dialog_manager.dialog_data["transaction_type"]
     total_sum: str = dialog_manager.find("total_sum").get_value()
     cat: int = dialog_manager.dialog_data["cat_id"]
+    comment: str = dialog_manager.find("comment").get_value()
 
     return {
-        "type_tr": types_transaction[type],
+        "type_tr": TYPES_TRANSACTION[type],
         "cat": cat,
         "total_sum": total_sum,
+        "comment": "-" if comment is None else comment,
     }
