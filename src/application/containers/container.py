@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 from src.application.services.categories.category_service import CategoryServiceImpl
 from src.application.services.monthly_balance.monthly_balance_service import MonthlyBalanceServiceImpl
 from src.application.use_cases.monthly_balance.use_cases import GetMonthlyBalanceUseCase
-from src.application.use_cases.transaction.use_cases import AddTransactionDefaultIncomeUseCase, AddTransactionDefaultExpenseUseCase
+from src.application.use_cases.transaction.use_cases import AddTransactionUseCase
 from src.infrastructure.repositories.memory.monthly_balance_repo import MonthlyBalanceMemoryRepositoryImpl
-from src.infrastructure.repositories.memory.uow import InMemoryUnitOfWork
+from src.application.uow.uow import InMemoryUnitOfWork
 from src.utils.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
 from src.infrastructure.database.session.sqlite import SQLiteDatabaseHelper
@@ -119,6 +119,7 @@ class Container(containers.DeclarativeContainer):
         _user_repository=user_repo,
         _category_repository=category_repo,
         _transaction_repository=transaction_repo,
+        _monthly_balance_repository=monthly_balance_repo,
     )
 
     # --- Services ---
@@ -133,7 +134,7 @@ class Container(containers.DeclarativeContainer):
     transac_service = providers.Singleton(
         TransactionServiceImpl,
         transaction_repo=transaction_repo,
-        user_repo=user_repo,
+        monthly_balance_repo=monthly_balance_repo
     )
     monthly_balance_service = providers.Singleton(
         MonthlyBalanceServiceImpl,
@@ -180,16 +181,10 @@ class Container(containers.DeclarativeContainer):
     )
 
     # --- Transaction use cases ---
-    add_transac_income_uc = providers.Factory(
-        AddTransactionDefaultIncomeUseCase,
+    add_transaction_uc = providers.Factory(
+        AddTransactionUseCase,
         transac_service=transac_service,
-        user_service=user_service,
-        uow=in_memory_uow,
-    )
-    add_transac_expense_uc = providers.Factory(
-        AddTransactionDefaultExpenseUseCase,
-        transac_service=transac_service,
-        user_service=user_service,
+        monthly_balance_service=monthly_balance_service,
         uow=in_memory_uow,
     )
 

@@ -65,14 +65,7 @@ async def confirm_transaction_ai_handler(
     data: dict = dialog_manager.dialog_data["result_ai"]
 
     container: Container = cast(Container, dialog_manager.middleware_data["container"])
-    if data["type"] == "income":
-        use_case: UseCaseOneEntity[TransactionEntity] = (
-            container.add_transac_income_uc()
-        )
-    else:
-        use_case: UseCaseOneEntity[TransactionEntity] = (
-            container.add_transac_expense_uc()
-        )
+    use_case: UseCaseOneEntity[TransactionEntity] = container.add_transaction_uc()
 
     await use_case.execute(tg_id=callback.from_user.id, data=data)
 

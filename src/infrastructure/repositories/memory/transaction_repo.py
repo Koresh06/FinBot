@@ -19,7 +19,7 @@ class TransactionMemoryRepositoryImpl(ITransactionRepository):
     async def add(self, transaction: TransactionEntity) -> TransactionEntity:
         new_transaction = TransactionEntity(
             id=self.counter,
-            user_id=transaction.user_id,
+            tg_id=transaction.tg_id,
             category_id=transaction.category_id,
             amount=transaction.amount,
             type=transaction.type,
@@ -29,5 +29,5 @@ class TransactionMemoryRepositoryImpl(ITransactionRepository):
         self.items.append(new_transaction)
         return new_transaction
 
-    async def get_by_user(self, user_id: int) -> list[TransactionEntity]:
-        return [t for t in self.items if t.user_id == user_id]
+    async def get_by_user(self, tg_id: int) -> list[TransactionEntity]:
+        return [t for t in self.items if t.tg_id == tg_id]

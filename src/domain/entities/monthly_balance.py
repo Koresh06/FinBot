@@ -1,5 +1,8 @@
 from dataclasses import dataclass, field
 
+from src.domain.entities.transaction import TransactionEntity
+from src.domain.value_objects.operetion_type_enum import OperationType
+
 
 @dataclass
 class MonthlyBalance:
@@ -11,10 +14,12 @@ class MonthlyBalance:
     balance: float = field(default=0.0)
     id: int | None = None
 
-    def fucn_income(self, value: float):
-        self.income += value
-        self.balance -= value
-
-    def func_expense(self, value: float):
-        self.expense += value
-        self.balance += value
+    def apply_transaction(self, transaction: TransactionEntity):
+        if transaction.type == OperationType.expense:
+            self.expense += transaction.amount
+            self.balance -= transaction.amount
+        elif transaction.type == OperationType.income:
+            self.income += transaction.amount
+            self.balance += transaction.amount
+        else:
+            raise ValueError(f"Unknown transaction type: {transaction.type}")

@@ -75,14 +75,7 @@ async def confirm_transaction_default_handler(
     }
 
     container: Container = cast(Container, dialog_manager.middleware_data["container"])
-    if type == "income":
-        use_case: UseCaseOneEntity[TransactionEntity] = (
-            container.add_transac_income_uc()
-        )
-    else:
-        use_case: UseCaseOneEntity[TransactionEntity] = (
-            container.add_transac_expense_uc()
-        )
+    use_case: UseCaseOneEntity[TransactionEntity] =container.add_transaction_uc()
 
     await use_case.execute(tg_id=callback.from_user.id, data=data)
 

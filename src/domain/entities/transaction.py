@@ -6,7 +6,7 @@ from src.domain.value_objects.operetion_type_enum import OperationType
 
 @dataclass
 class TransactionEntity:
-    user_id: int
+    tg_id: int
     category_id: int
     amount: float
     type: OperationType

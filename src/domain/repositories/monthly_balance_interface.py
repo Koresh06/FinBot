@@ -15,7 +15,7 @@ class IMonthlyBalanceRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_current_by_item_id(self, tg_id: int, year: int, month: int) -> MonthlyBalance | None:
+    async def get_current_by_item_id(self, tg_id: int, year: int, month: int) -> MonthlyBalance:
         pass
 
     @abstractmethod

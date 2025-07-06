@@ -15,7 +15,7 @@ class CategoryServiceImpl(ICategoryService):
     async def get_user_type_categories(self, user_id: int | None, type: OperationType) -> list[CategoryEntity]:
         if user_id is None:
             raise ValueError("user_id не может быть None")
-        return await self.category_repo.get_user_type_categories(user_id, type)
+        return await self.category_repo.get_user_type_items(user_id, type)
 
     async def create_category(self, category: CategoryEntity) -> CategoryEntity:
         existing = await self.category_repo.find_duplicate_category(
