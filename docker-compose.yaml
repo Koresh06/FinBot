@@ -1,23 +1,26 @@
-version: "3.9"
 
 services:
+  main-app:
+    build: .
+    container_name: main-app
+    command: uvicorn --factory src.presentation.api.main:create_app --host 0.0.0.0 --port 8050
+    ports:
+      - "8050:8050"
+    restart: always
+    env_file:
+      - .env
+
   bot:
     build: .
     container_name: finance_bot
-    command: python -m src.main
+    command: python -m src.presentation.bot.main
     volumes:
       - .:/code
     env_file:
       - .env
+    environment:
+      - APP_CONFIG__API_CLIENT__HOST=main-app
+      - APP_CONFIG__API_CLIENT__PORT=8050
     restart: always
-
-  tests:
-    build: .
-    container_name: finance_bot_tests
-    command: pytest --maxfail=1 --disable-warnings -q
-    volumes:
-      - .:/code
-    env_file:
-      - .env
     depends_on:
-      - bot
+      - main-app

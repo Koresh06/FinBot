@@ -2,9 +2,13 @@ from pydantic import BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class RunConfig(BaseModel):
-    host: str = "0.0.0.0"
-    port: int = 8000
+class ApiConfig(BaseModel):
+    host: str = "localhost"
+    port: int = 8050
+
+    @property
+    def base_url(self) -> str:
+        return f"http://{self.host}:{self.port}"
 
 
 class ApiV1Prefix(BaseModel):
@@ -70,7 +74,7 @@ class MongoConfig(BaseModel):
 
 
 class DatabaseConfig(BaseModel):
-    db_type: str = "sqite"  # Тип БД: postgres, sqlite, redis, mongo
+    db_type: str = "memory"  # Тип БД: postgres, sqlite, redis, mongo
     postgres: PostgresSQLConfig | None = None
     sqlite: SQLiteConfig | None = None
     redis: RedisConfig | None = None
@@ -110,8 +114,7 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
         env_prefix="APP_CONFIG__",
     )
-    run: RunConfig = RunConfig()
-    api: ApiPrefix = ApiPrefix()
+    api_client: ApiConfig = ApiConfig()
     db: DatabaseConfig = DatabaseConfig()
     bot: TgBot = TgBot()
     ai: GeminiApiKey = GeminiApiKey()

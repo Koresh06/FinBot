@@ -4,7 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["Koresh06 <korets-24@mail.ru>"]
 readme = "README.md"
-packages = [{ include = "finbot" }]
+packages = [{ include = "src" }]
 
 [tool.poetry.dependencies]
 python = ">=3.11"
