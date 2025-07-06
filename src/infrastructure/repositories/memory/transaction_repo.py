@@ -6,15 +6,15 @@ from src.domain.repositories.transaction_repo_interface import ITransactionRepos
 
 @dataclass
 class TransactionMemoryRepositoryImpl(ITransactionRepository):
-    transactions: list[TransactionEntity] = field(default_factory=list)
+    items: list[TransactionEntity] = field(default_factory=list)
     counter: int = 1
 
     def snapshot(self):
         import copy
-        return copy.deepcopy(self.transactions)
+        return copy.deepcopy(self.items)
 
     def restore(self, state):
-        self.transactions = state
+        self.items = state
 
     async def add(self, transaction: TransactionEntity) -> TransactionEntity:
         new_transaction = TransactionEntity(
@@ -26,8 +26,8 @@ class TransactionMemoryRepositoryImpl(ITransactionRepository):
             comment=transaction.comment,
         )
         self.counter += 1
-        self.transactions.append(new_transaction)
+        self.items.append(new_transaction)
         return new_transaction
 
     async def get_by_user(self, user_id: int) -> list[TransactionEntity]:
-        return [t for t in self.transactions if t.user_id == user_id]
+        return [t for t in self.items if t.user_id == user_id]

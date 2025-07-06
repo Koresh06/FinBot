@@ -10,6 +10,7 @@ class TransactionEntity:
     category_id: int
     amount: float
     type: OperationType
-    created_at: datetime = field(default_factory=datetime.now)
     comment: str | None = None
+    created_at: datetime = field(default_factory=datetime.now)
     id: int | None = None
+ 

@@ -2,7 +2,10 @@ from dependency_injector import containers, providers
 from sqlalchemy.ext.asyncio import async_sessionmaker, AsyncSession
 
 from src.application.services.categories.category_service import CategoryServiceImpl
+from src.application.services.monthly_balance.monthly_balance_service import MonthlyBalanceServiceImpl
+from src.application.use_cases.monthly_balance.use_cases import GetMonthlyBalanceUseCase
 from src.application.use_cases.transaction.use_cases import AddTransactionDefaultIncomeUseCase, AddTransactionDefaultExpenseUseCase
+from src.infrastructure.repositories.memory.monthly_balance_repo import MonthlyBalanceMemoryRepositoryImpl
 from src.infrastructure.repositories.memory.uow import InMemoryUnitOfWork
 from src.utils.config import settings
 from src.infrastructure.database.session.postgresql import PostgresSQLDatabaseHelper
@@ -104,6 +107,11 @@ class Container(containers.DeclarativeContainer):
             session_factory=postgres_sessionmaker,
         ),
     )
+    
+    monthly_balance_repo = providers.Selector(
+        db_type,
+        memory=providers.Singleton(MonthlyBalanceMemoryRepositoryImpl),
+    )
 
     # --- UoW ---
     in_memory_uow = providers.Factory(
@@ -126,6 +134,10 @@ class Container(containers.DeclarativeContainer):
         TransactionServiceImpl,
         transaction_repo=transaction_repo,
         user_repo=user_repo,
+    )
+    monthly_balance_service = providers.Singleton(
+        MonthlyBalanceServiceImpl,
+        monthly_balance_repo=monthly_balance_repo,
     )
 
     # --- User use cases ---
@@ -179,6 +191,12 @@ class Container(containers.DeclarativeContainer):
         transac_service=transac_service,
         user_service=user_service,
         uow=in_memory_uow,
+    )
+
+    # --- MonthlyBalance use cases ---
+    get_monthly_balance_uc = providers.Factory(
+        GetMonthlyBalanceUseCase,
+        monthly_balance_service=monthly_balance_service,
     )
 
 

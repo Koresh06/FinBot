@@ -15,7 +15,7 @@ class ICategoryRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_user_type_categories(self, user_id: int, type: OperationType) -> list[CategoryEntity]:
+    async def get_user_type_items(self, user_id: int, type: OperationType) -> list[CategoryEntity]:
         pass
 
     @abstractmethod

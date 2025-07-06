@@ -21,10 +21,15 @@ my_profile_dialog = Dialog(
     Window(
         Format(
             "🧾 <b>Мой профиль</b>\n\n"
-            "👤 <b>Полное имя:</b> {full_name}\n"
+            "👤 <b>Имя:</b> {full_name}\n"
             "🔗 <b>Username:</b> @{username}\n"
             "🆔 <b>TG ID:</b> {tg_id}\n"
-            "💰 <b>Баланс:</b> {balance}\n"
+            "💳 <b>Общий баланс:</b> {balance} {currency}\n\n"
+            "📅 <b>Месяц:</b> {month} {year}\n"
+            "   ▪️ <b>Доход:</b> {income} {currency}\n"
+            "   ▪️ <b>Расход:</b> {expense} {currency}\n"
+            "   ▪️ <b>Баланс:</b> {monthly_balance} {currency}\n\n"
+            "📈 <i>Посмотреть статистику за прошлые месяцы</i>"
         ),
         state=MyProfile.start,
         getter=my_profile_details,

@@ -1,6 +1,6 @@
 from aiogram_dialog import DialogManager
 
-from src.presentation.bot.lexicon.dafault import TYPES_TRANSACTION
+from src.presentation.bot.lexicon.dictionaries import TYPES_TRANSACTION
 
 
 async def getter_response_ai(dialog_manager: DialogManager, **kwargs) -> dict:

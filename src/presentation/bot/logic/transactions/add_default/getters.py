@@ -5,7 +5,7 @@ from src.application.containers.container import Container
 from src.application.use_cases.intarface import UseCaseMultipleEntities
 from src.domain.entities.category import CategoryEntity
 from src.domain.value_objects.operetion_type_enum import OperationType
-from src.presentation.bot.lexicon.dafault import TYPES_TRANSACTION
+from src.presentation.bot.lexicon.dictionaries import TYPES_TRANSACTION
 
 
 
